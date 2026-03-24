@@ -3,7 +3,7 @@
 A multi-view project management tool built with React + TypeScript.
 
 ## Live Demo
-[velozity-tracker.vercel.app](https://velozity-tracker.vercel.app)
+[velozity-tracker-neon.vercel.app](https://velozity-tracker-neon.vercel.app)
 
 ## Setup
 ```bash
