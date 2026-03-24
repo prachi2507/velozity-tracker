@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useTask, SortField } from '../context/TaskContext';
-import { Task, Status } from '../types';
+import { Status } from '../types';
 
 const PRIORITY_COLORS: Record<string, string> = {
   Critical: '#ef4444', High: '#f97316', Medium: '#f59e0b', Low: '#10b981'
