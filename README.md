@@ -1,46 +1,43 @@
-# Getting Started with Create React App
+# Velozity Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A multi-view project management tool built with React + TypeScript.
 
-## Available Scripts
+## Live Demo
+[velozity-tracker.vercel.app](https://velozity-tracker.vercel.app)
 
-In the project directory, you can run:
+## Setup
+```bash
+npm install
+npm start
+```
 
-### `npm start`
+## State Management
+Used **React Context + useReducer** because the state is shared globally across views (filters, tasks, sort), useReducer handles complex state transitions cleanly without extra dependencies, and the app doesn't need the overhead of an external library.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Virtual Scrolling
+Implemented from scratch in ListView. The approach:
+- Container has fixed height (500px) with overflow-y scroll
+- Total height spacer div = totalRows × ROW_HEIGHT (48px) keeps scrollbar accurate
+- On scroll event, calculate startIndex = scrollTop / ROW_HEIGHT minus 5 buffer rows
+- Only render visible rows positioned absolutely at startIndex × ROW_HEIGHT
+- This means 500 tasks = only ~15 DOM nodes at any time
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Drag and Drop
+Built using native HTML5 drag events (no libraries):
+- onDragStart stores the dragged task in a useRef
+- onDragOver on columns sets visual highlight state
+- onDrop dispatches MOVE_TASK to update status in context
+- onDragEnd clears all drag state and snaps back if dropped outside
+- Placeholder effect achieved via opacity reduction on dragged card
 
-### `npm test`
+## Features
+- Kanban, List, Timeline views with instant switching
+- Custom drag and drop between Kanban columns
+- Virtual scrolling (500+ tasks, only visible rows rendered)
+- URL-synced filters (shareable, bookmarkable)
+- Live collaboration indicators (simulated)
+- Overdue task highlighting
+- Inline status change in List view
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Hardest Problem
+The virtual scrolling required careful coordination between the scroll container height, absolute positioning of rendered rows, and buffer management to prevent blank gaps during fast scrolling.
